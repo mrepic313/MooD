@@ -67,7 +67,7 @@ const deleteDiaryEntry = async (req, res) => {
   try {
     const entry = await Diary.findById(req.params.id);
     if (entry && entry.user.toString() === req.user._id.toString()) {
-      await entry.remove();
+      await entry.deleteOne({_id: req.params.id});
       res.status(200).json({ message: 'Diary entry deleted' });
     } else {
       res.status(404).json({ message: 'Diary entry not found or not authorized' });
