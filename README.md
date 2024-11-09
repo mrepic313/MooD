@@ -1,6 +1,6 @@
 # MooD
 
-MooD is your next best friend and the only app you'll ever need. Featuring your own personal journals that are encrypted and your own personal AI that can suggest mood-boosting activities and ensure your emotional wellbeing
+MooD is your next best friend and the only mental health app you'll ever need. Featuring your own personal journals that are encrypted and your own personal AI that can suggest mood-boosting activities and ensure your emotional wellbeing
 
 ## Features
 
