@@ -15,7 +15,8 @@ def analyze_emotions(text):
         emotion_counts[emotion] = emotion_counts.get(emotion, 0) + score
 
     prevalent_emotions = sorted(emotion_counts.items(), key=lambda x: x[1], reverse=True)
-    return prevalent_emotions
+    top_5_emotions = prevalent_emotions[:5]
+    return top_5_emotions
 
 @app.route('/')
 def index():
