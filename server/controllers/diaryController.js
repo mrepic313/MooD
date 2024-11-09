@@ -77,10 +77,31 @@ const deleteDiaryEntry = async (req, res) => {
   }
 };
 
+// controllers/diaryController.js
+
+// Calculate average mood intensity for the user's diary entries
+const getAverageMood = async (req, res) => {
+    try {
+      const entries = await Diary.find({ user: req.user._id, 'mood.intensity': { $exists: true } });
+      if (entries.length === 0) {
+        return res.status(200).json({ message: 'No mood data available', averageIntensity: null });
+      }
+  
+      const totalIntensity = entries.reduce((sum, entry) => sum + (entry.mood.intensity || 0), 0);
+      const averageIntensity = totalIntensity / entries.length;
+      
+      res.status(200).json({ averageIntensity });
+    } catch (error) {
+      res.status(500).json({ message: 'Error calculating average mood', error });
+    }
+  };
+    
+
 module.exports = {
   createDiaryEntry,
   getDiaryEntries,
   getDiaryEntryById,
   updateDiaryEntry,
   deleteDiaryEntry,
+  getAverageMood
 };

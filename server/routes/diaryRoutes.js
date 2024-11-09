@@ -6,6 +6,7 @@ const {
   getDiaryEntryById,
   updateDiaryEntry,
   deleteDiaryEntry,
+  getAverageMood,
 } = require('../controllers/diaryController');
 const protect = require('../middleware/authMiddleware');
 
@@ -20,4 +21,5 @@ router.route('/:id')
   .put(protect, updateDiaryEntry)           // Update a diary entry
   .delete(protect, deleteDiaryEntry);       // Delete a diary entry
 
+router.get('/average/mood', protect, getAverageMood);
 module.exports = router;
