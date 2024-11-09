@@ -1,6 +1,6 @@
 // controllers/diaryController.js
 const Diary = require('../models/Diary');
-
+const axios = require('axios');
 // Create a new diary entry
 const createDiaryEntry = async (req, res) => {
   try {
@@ -95,13 +95,54 @@ const getAverageMood = async (req, res) => {
       res.status(500).json({ message: 'Error calculating average mood', error });
     }
   };
-    
 
-module.exports = {
-  createDiaryEntry,
-  getDiaryEntries,
-  getDiaryEntryById,
-  updateDiaryEntry,
-  deleteDiaryEntry,
-  getAverageMood
-};
+const analyzeDiary = async (req, res) => {
+    const { diaryId } = req.body;
+  
+    if (!diaryId) {
+      return res.status(400).json({ error: 'DiaryId are required' });
+    }
+  
+    try {
+        const diaryEntry = await Diary.findById(diaryId);
+        if (!diaryEntry || diaryEntry.user.toString() !== req.user._id.toString()) {
+            return res.status(404).json({ error: 'Diary entry not found or not authorized' });
+        }
+    const {content} = diaryEntry;
+      // Send the content to the Flask service for emotion analysis
+      const response = await axios.post('http://localhost:5002/analyze', {content});
+      
+      // Extract and sort top 5 emotions based on the score
+      const emotions = response.data
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([label, score]) => ({ label, score }));
+  
+      // Find the existing diary entry by ID and update its mood field
+      
+  
+      // Update the mood field with analyzed emotions
+      diaryEntry.mood = {
+        mood: emotions[0]?.label || "neutral",           // Take the most prevalent emotion
+        intensity: Math.round(emotions[0]?.score * 10) || 5, // Scale the score for intensity
+        tags: emotions.map((e) => e.label),              // Save all top emotions as tags
+        note: `Top emotions: ${emotions.map((e) => `${e.label} (${Math.round(e.score * 100)}%)`).join(", ")}`
+      };
+  
+      const updatedEntry = await diaryEntry.save();
+      res.status(200).json(updatedEntry);
+    } catch (error) {
+      console.error('Error analyzing emotions:', error);
+      res.status(500).json({ error: 'Failed to analyze emotions' });
+    }
+  };
+  
+  module.exports = {
+    createDiaryEntry,
+    getDiaryEntries,
+    getDiaryEntryById,
+    updateDiaryEntry,
+    deleteDiaryEntry,
+    getAverageMood,
+    analyzeDiary,  // Export the new function
+  };

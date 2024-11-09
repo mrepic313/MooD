@@ -1,5 +1,7 @@
 // routes/diaryRoutes.js
 const express = require('express');
+const axios = require('axios');
+const Diary = require('../models/Diary')
 const {
   createDiaryEntry,
   getDiaryEntries,
@@ -7,6 +9,7 @@ const {
   updateDiaryEntry,
   deleteDiaryEntry,
   getAverageMood,
+  analyzeDiary,
 } = require('../controllers/diaryController');
 const protect = require('../middleware/authMiddleware');
 
@@ -22,4 +25,6 @@ router.route('/:id')
   .delete(protect, deleteDiaryEntry);       // Delete a diary entry
 
 router.get('/average/mood', protect, getAverageMood);
+
+router.post('/analyze', protect, analyzeDiary)
 module.exports = router;
