@@ -14,30 +14,48 @@
     <h2>This is how you're feeling:</h2>
     <ul id="emotions-list"></ul>
 
-    <script>
-        document.getElementById("upload-form").onsubmit = async (e) => {
-            e.preventDefault();
-            const formData = new FormData();
-            formData.append("file", document.getElementById("file").files[0]);
+    
+    <h2>Feedback from Gemini API</h2>
+<ul id="feedback-list"></ul>
 
-            const response = await fetch("/analyze", {
-                method: "POST",
-                body: formData
+<script>
+    document.getElementById("upload-form").onsubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("file", document.getElementById("file").files[0]);
+
+        const response = await fetch("/analyze", {
+            method: "POST",
+            body: formData
+        });
+
+        if (response.ok) {
+            const { emotions, feedback } = await response.json();
+
+            const emotionsList = document.getElementById("emotions-list");
+            emotionsList.innerHTML = "";
+            emotions.forEach(([emotion, score]) => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `${emotion}: ${score.toFixed(2)}`;
+                emotionsList.appendChild(listItem);
             });
 
-            if (response.ok) {
-                const emotions = await response.json();
-                const emotionsList = document.getElementById("emotions-list");
-                emotionsList.innerHTML = "";
-                emotions.forEach(([emotion, score]) => {
+            const feedbackList = document.getElementById("feedback-list");
+            feedbackList.innerHTML = "";
+            if (feedback && feedback.feedback) {
+                feedback.feedback.forEach(feedbackItem => {
                     const listItem = document.createElement("li");
-                    listItem.textContent = `${emotion}: ${score.toFixed(2)}`;
-                    emotionsList.appendChild(listItem);
+                    listItem.textContent = feedbackItem;
+                    feedbackList.appendChild(listItem);
                 });
             } else {
-                alert("Error uploading file");
+                feedbackList.textContent = "No feedback available.";
             }
-        };
-    </script>
+        } else {
+            alert("Error uploading file");
+        }
+    };
+</script>
+
 </body>
 </html>
