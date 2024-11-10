@@ -31,11 +31,11 @@ To get started with MooD, you can follow these steps:
 
 1.  Clone the repository: git clone https://github.com/yourusername/MooD.git
 2.  Navigate to the project directory: cd MooD
-3.  Install dependencies:
-4.    Frontend: npm install
+3.  Install dependencies by running npm install
 5.  Start the frontend and backend servers:
-6.    Frontend: npm start
-7.  Access the application in your browser at http://localhost:5002.
+6.    Frontend: npm start in .../MooD/server dir
+7.    Backend: npm start in .../MooD/client dir
+8.  Access the application in your browser at http://localhost:3000
 
 ## Contributing
 
