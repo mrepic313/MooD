@@ -7,7 +7,7 @@ MooD is your next best friend and the only mental health app you'll ever need. F
 - An AI-powered chatbot that users can interact with to reflect on their day, discuss emotions, or ask for advice. The Chatbot’s tone adapts to the user’s mood, offering empathetic or cheerful responses based on the context.
 - Analyze the user's entries for mood-indicative keywords and phrases to gauge the user’s overall emotional state.
 - Mood Insight Dashboard and schedule for better planning and organization
-- Strong data encryption and privacy options, ensuring that users’ diary entries and mood data remain confidential, with biometric data or a custom PIN
+- Strong data encryption and privacy options, ensuring that users’ diary entries and mood data remain confidential by creating an account
 
 
 ## Technologies Used
