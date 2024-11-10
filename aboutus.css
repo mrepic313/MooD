@@ -1,0 +1,37 @@
+.about-us-container {
+    text-align: center;
+    padding: 20px;
+    background-color: #f3f3f3;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: auto;
+}
+
+.about-us-container h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.about-us-container p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.developer-images {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.image-placeholder {
+    width: 150px;
+    height: 150px;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
+    color: #666;
+}
