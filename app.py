@@ -12,13 +12,19 @@ pipe = pipeline("text-classification", model="SamLowe/roberta-base-go_emotions")
 
 app = Flask(__name__)
 
-def gemini_api(emotions):
+def gemini_api(emotions, content):
     emotion_text = ", ".join(f"{emotion}: {score:.2f}" for emotion, score in emotions)
     prompt = (
-        f"A user's recent journal entry reveals the following emotions and intensities: {emotion_text}. "
-        "Please provide thoughtful and supportive advice tailored to help the user. "
-        "Your response should acknowledge the mixed emotions and offer guidance that encourages well-being, "
-        "suggests helpful actions, or provides comforting words. Eliminate All the asterisks in the output text and format the response."
+        f"A user's recent journal entry reads as follows:\n\n"
+        f"'{content}'\n\n"
+        f"The entry reveals the following emotions and intensities: {emotion_text}.\n\n"
+        "Please provide a structured, supportive response in the following format:\n\n"
+        "### Primary Emotions\n"
+        "List the top 2 primary emotions and a short description of their relation to the entry. Make it sound like you are talking to the user. Don't write scores.\n\n"
+        "### Suggestions\n"
+        "Provide 2-3 suggestions, one of which should be emotionally supportive. The others can be practical activities or practices to help the user adjust or respond to different moods.\n\n"
+        "### Quote of The Day\n"
+        "Conclude with an inspiring quote that relates to the content of the journal, formatted as: Quote - Author.\n"
     )
 
 
@@ -53,7 +59,7 @@ def analyze():
         return jsonify({"error": "Content is required"}), 400
     content = data['content']
     emotions = analyze_emotions(content)
-    feedback = gemini_api(emotions)
+    feedback = gemini_api(emotions, content)
     return jsonify({
         "emotions": emotions,
         "suggestion": feedback

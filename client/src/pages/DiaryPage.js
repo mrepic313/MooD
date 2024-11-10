@@ -1,5 +1,3 @@
-// src/pages/DiaryPage.js
-
 import React, { useState, useEffect } from 'react';
 import { 
     createDiaryEntry, 
@@ -17,10 +15,9 @@ function DiaryPage() {
   const [content, setContent] = useState('');
   const [diaries, setDiaries] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [editingId, setEditingId] = useState(null); // For editing mode
-  const [averageMood, setAverageMood] = useState(null); // For average mood intensity
+  const [editingId, setEditingId] = useState(null);
+  const [averageMood, setAverageMood] = useState(null);
 
-  // Fetch all diary entries and the average mood intensity when the component loads
   useEffect(() => {
     const fetchDiaries = async () => {
       setLoading(true);
@@ -39,19 +36,16 @@ function DiaryPage() {
     fetchDiaries();
   }, []);
 
-  // Handle form submission to create or update a diary entry
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (editingId) {
-        // Update existing entry
         const updatedEntry = await updateDiaryEntry(editingId, { title, content });
         setDiaries((prevDiaries) =>
           prevDiaries.map((entry) => (entry._id === editingId ? updatedEntry : entry))
         );
-        setEditingId(null); // Exit editing mode
+        setEditingId(null);
       } else {
-        // Create a new entry
         const newEntry = await createDiaryEntry({ title, content, tags: [], mood: null });
         setDiaries([newEntry, ...diaries]);
       }
@@ -62,19 +56,17 @@ function DiaryPage() {
     }
   };
 
-  // Edit an entry by loading its data into the form
   const handleEdit = async (diaryId) => {
     try {
       const diary = await getDiaryEntryById(diaryId);
       setTitle(diary.title);
       setContent(diary.content);
-      setEditingId(diaryId); // Enter editing mode
+      setEditingId(diaryId);
     } catch (error) {
       console.error('Error fetching diary entry:', error);
     }
   };
 
-  // Delete a diary entry
   const handleDelete = async (diaryId) => {
     try {
       await deleteDiaryEntry(diaryId);
@@ -84,33 +76,95 @@ function DiaryPage() {
     }
   };
 
-  // Analyze a specific diary entry for mood and suggestions
-  const handleAnalyze = async (diaryId) => {
+// Save the analyzed suggestions to localStorage after fetching
+const handleAnalyze = async (diaryId) => {
     try {
       const analyzedEntry = await analyzeDiaryEntry(diaryId);
-      // Update the analyzed entry in the state with mood and suggestion data
+      
+      const formattedSuggestions = formatSuggestion(analyzedEntry.suggestions);
+  
+      // Save to local storage
+      localStorage.setItem(`suggestions_${diaryId}`, formattedSuggestions);
+  
+      // Update state
       setDiaries((prevDiaries) =>
         prevDiaries.map((entry) =>
-          entry._id === diaryId ? { ...entry, mood: analyzedEntry.mood, suggestions: analyzedEntry.suggestions } : entry
+          entry._id === diaryId ? { ...entry, mood: analyzedEntry.mood, suggestions: formattedSuggestions } : entry
         )
       );
     } catch (error) {
       console.error('Error analyzing diary entry:', error);
     }
   };
+  
+  useEffect(() => {
+    const fetchDiaries = async () => {
+      setLoading(true);
+      try {
+        const fetchedDiaries = await getDiaryEntries();
+
+        // Merge stored suggestions from localStorage
+        const mergedDiaries = fetchedDiaries.map((diary) => {
+          const storedSuggestion = localStorage.getItem(`suggestions_${diary._id}`);
+          return storedSuggestion ? { ...diary, suggestions: storedSuggestion } : diary;
+        });
+
+        setDiaries(mergedDiaries);
+
+        const avgMood = await getAverageMood();
+        setAverageMood(avgMood.averageIntensity);
+      } catch (error) {
+        console.error('Failed to fetch diaries or average mood:', error);
+      }
+      setLoading(false);
+    };
+
+    fetchDiaries();
+  }, []);
+  
+
+// Helper function to extract each section based on a case-insensitive section title
+const extractSection = (text, sectionTitle) => {
+    const lowerText = text.toLowerCase();
+    const lowerTitle = `### ${sectionTitle.toLowerCase()}`;
+    const start = lowerText.indexOf(lowerTitle);
+    if (start === -1) return null;
+
+    const end = lowerText.indexOf("###", start + 1);
+    const section = text.slice(start, end === -1 ? text.length : end).replace(new RegExp(`### ${sectionTitle}`, "i"), '').trim();
+    return section;
+};
+
+// Function to format suggestions by extracting and styling sections, removing all asterisks
+const formatSuggestion = (suggestions) => {
+    const primaryEmotions = (extractSection(suggestions, "Primary Emotions") || "No primary emotions available.").replace(/\*/g, "");
+    const tips = (extractSection(suggestions, "Suggestions") || "No suggestions available.").replace(/\*/g, "");
+    const quote = (extractSection(suggestions, "Quote of the Day") || "No quote available.").replace(/\*/g, "");
+
+    return `
+        <div>
+            <h4><strong>Primary Emotions</strong></h4>
+            <p>${primaryEmotions}</p>
+            <h4><strong>Suggestions</strong></h4>
+            <p>${tips}</p>
+            <h4><strong>Quote of the Day</strong></h4>
+            <p>${quote}</p>
+        </div>
+    `;
+};
+
+
 
   return (
     <div className="diary-page">
       <h2>Diary Page</h2>
 
-      {/* Display average mood intensity */}
       {averageMood !== null && (
         <div className="average-mood">
           <h4>Average Mood Intensity: {averageMood.toFixed(2)}</h4>
         </div>
       )}
 
-      {/* Form to create or update a diary entry */}
       <form onSubmit={handleSubmit} className="diary-form">
         <input
           type="text"
@@ -139,7 +193,6 @@ function DiaryPage() {
 
       {loading && <p>Loading...</p>}
 
-      {/* List of all diary entries */}
       <div className="diary-entries">
         <h3>Your Diary Entries</h3>
         {diaries.map((diary) => (
