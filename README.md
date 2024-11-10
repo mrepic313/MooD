@@ -4,7 +4,6 @@ MooD is your next best friend and the only mental health app you'll ever need. F
 
 ## Features
 
-- Encrypted diary entries ensure that your deepest secrets are never stolen
 - An AI-powered chatbot that users can interact with to reflect on their day, discuss emotions, or ask for advice. The Chatbot’s tone adapts to the user’s mood, offering empathetic or cheerful responses based on the context.
 - Analyze the user's entries for mood-indicative keywords and phrases to gauge the user’s overall emotional state.
 - Mood Insight Dashboard and schedule for better planning and organization
@@ -14,8 +13,10 @@ MooD is your next best friend and the only mental health app you'll ever need. F
 ## Technologies Used
 
 - **Frontend:** Built using React, CSS and JavaScript
-- **Backend:** Built using Python
-- Database built using MongoDB
+- **Backend:** Built using Python, PyTorch, TensorFlow, and JavaScript
+- **Database** Built using MongoDB
+- **Custom Trained Text Classification Model** Meta's [roBERTa-base]([url](https://github.com/facebookresearch/fairseq/tree/main/examples/roberta))
+- **Dataset and Chatbot** Google Gemini AI for Chatbot and [Emotions Dataset]([url](https://huggingface.co/datasets/google-research-datasets/go_emotions))
 
 ## Team Members
 
