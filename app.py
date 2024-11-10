@@ -15,13 +15,16 @@ app = Flask(__name__)
 
 def gemini_api(emotions):
     emotion_text = ", ".join(f"{emotion}: {score:.2f}" for emotion, score in emotions)
-    prompt = f"Based on the emotions: {emotion_text}, what is your advice?"
-
+    prompt = f"The following emotions are prevalent: {emotion_text}. What advice would you give based on these emotions?"
     try:
-        response = genai.generate_text(model="gemini-1.5-flash", prompt=prompt)
-        return response['text'] if 'text' in response else "No response text found"
+        model = genai.GenerativeModel(model_name="gemini-1.5-flash")
+        response = model.generate_content(prompt)
+        print("Gemini API response:", response)
+
+        return response['text']
     except Exception as e:
-        return {"Error": str(e)}
+        print("Error calling Gemini API:", e)
+        return {"error": str(e)}
 
 def analyze_emotions(text):
     results = pipe(text, top_k=None)  
