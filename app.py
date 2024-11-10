@@ -15,13 +15,14 @@ app = Flask(__name__)
 
 def gemini_api(emotions):
     emotion_text = ", ".join(f"{emotion}: {score:.2f}" for emotion, score in emotions)
-    prompt = f"The following emotions are prevalent: {emotion_text}. What advice would you give based on these emotions?"
+    prompt = f"The following emotions are prevalent: {emotion_text}. What activities should I perform based on these emotions? Please do not use markdown in this response."
     try:
         model = genai.GenerativeModel(model_name="gemini-1.5-flash")
         response = model.generate_content(prompt)
         print("Gemini API response:", response)
 
-        return response['text'] 
+        feedback_text = response.candidates[0].content.parts[0].text
+        return feedback_text
     except Exception as e:
         print("Error calling Gemini API:", e)
         return {"error": str(e)}
@@ -50,6 +51,10 @@ def analyze():
         text = file.read().decode("utf-8")
         emotions = analyze_emotions(text)
         feedback = gemini_api(emotions)
+        feedback_filename = "feedback.txt"
+        with open(feedback_filename, "w") as f:
+            f.write(feedback)
+
         return jsonify({
             "emotions": emotions,
             "feedback": feedback

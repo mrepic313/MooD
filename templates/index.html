@@ -42,12 +42,10 @@
 
             const feedbackList = document.getElementById("feedback-list");
             feedbackList.innerHTML = "";
-            if (feedback && feedback.feedback) {
-                feedback.feedback.forEach(feedbackItem => {
-                    const listItem = document.createElement("li");
-                    listItem.textContent = feedbackItem;
-                    feedbackList.appendChild(listItem);
-                });
+            if (feedback && typeof feedback === "string") {
+                const listItem = document.createElement("li");
+                listItem.textContent = feedback;
+                feedbackList.appendChild(listItem);
             } else {
                 feedbackList.textContent = "No feedback available.";
             }
@@ -56,6 +54,7 @@
         }
     };
 </script>
+
 
 </body>
 </html>
