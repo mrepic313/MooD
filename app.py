@@ -52,6 +52,7 @@ def analyze():
         emotions = analyze_emotions(text)
         feedback = gemini_api(emotions)
         feedback_filename = "feedback.txt"
+        print(feedback)
         with open(feedback_filename, "w") as f:
             f.write(feedback)
 
