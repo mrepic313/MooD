@@ -13,6 +13,7 @@ const diarySchema = new mongoose.Schema({
     note: { type: String },              // Optional note explaining the mood
   },
   createdAt: { type: Date, default: Date.now },
+  suggestions: { type: String },
 });
 
 module.exports = mongoose.model('Diary', diarySchema);

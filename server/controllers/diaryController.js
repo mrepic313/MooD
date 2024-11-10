@@ -96,46 +96,51 @@ const getAverageMood = async (req, res) => {
     }
   };
 
-const analyzeDiary = async (req, res) => {
+  const analyzeDiary = async (req, res) => {
     const { diaryId } = req.body;
-  
+
     if (!diaryId) {
-      return res.status(400).json({ error: 'DiaryId are required' });
+        return res.status(400).json({ error: 'DiaryId is required' });
     }
-  
+
     try {
         const diaryEntry = await Diary.findById(diaryId);
         if (!diaryEntry || diaryEntry.user.toString() !== req.user._id.toString()) {
             return res.status(404).json({ error: 'Diary entry not found or not authorized' });
         }
-    const {content} = diaryEntry;
-      // Send the content to the Flask service for emotion analysis
-      const response = await axios.post('http://localhost:5002/analyze', {content});
-      
-      // Extract and sort top 5 emotions based on the score
-      const emotions = response.data
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5)
-        .map(([label, score]) => ({ label, score }));
-  
-      // Find the existing diary entry by ID and update its mood field
-      
-  
-      // Update the mood field with analyzed emotions
-      diaryEntry.mood = {
-        mood: emotions[0]?.label || "neutral",           // Take the most prevalent emotion
-        intensity: Math.round(emotions[0]?.score * 10) || 5, // Scale the score for intensity
-        tags: emotions.map((e) => e.label),              // Save all top emotions as tags
-        note: `Top emotions: ${emotions.map((e) => `${e.label} (${Math.round(e.score * 100)}%)`).join(", ")}`
-      };
-  
-      const updatedEntry = await diaryEntry.save();
-      res.status(200).json(updatedEntry);
+
+        const { content } = diaryEntry;
+
+        try {
+            const response = await axios.post('http://localhost:5002/analyze', { content });
+
+            // Get emotions and suggestion from the response
+            let { emotions, suggestion } = response.data;
+
+            // Sort emotions by score and prepare mood data
+            emotions = emotions.sort((a, b) => b[1] - a[1]).slice(0, 5)
+                               .map(([label, score]) => ({ label, score }));
+
+            diaryEntry.mood = {
+                mood: emotions[0]?.label || "neutral",
+                intensity: Math.round(emotions[0]?.score * 10) || 5,
+                tags: emotions.map(e => e.label),
+                note: `Top emotions: ${emotions.map(e => `${e.label} (${Math.round(e.score * 100)}%)`).join(", ")}`
+            };
+
+            diaryEntry.suggestions = suggestion;
+            const updatedEntry = await diaryEntry.save();
+            res.status(200).json(updatedEntry);
+        } catch (axiosError) {
+            console.error('Error connecting to Flask service:', axiosError.message);
+            res.status(502).json({ error: 'Failed to connect to emotion analysis service' });
+        }
     } catch (error) {
-      console.error('Error analyzing emotions:', error);
-      res.status(500).json({ error: 'Failed to analyze emotions' });
+        console.error('Error analyzing emotions:', error);
+        res.status(500).json({ error: 'Failed to analyze emotions' });
     }
-  };
+};
+
   
   module.exports = {
     createDiaryEntry,
