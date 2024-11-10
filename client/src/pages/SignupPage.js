@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { signup } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 
+
 function SignupPage() {
   const [username, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -10,26 +11,27 @@ function SignupPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // Clear any previous errors
+    setError('');
+
 
     try {
-      // Attempt to register the user
       await signup({ username, email, password });
-      // Redirect to login page after successful signup
       navigate('/login');
     } catch (err) {
-      // Handle and display errors if signup fails
       setError('Signup failed. Please try again.');
       console.error('Error during signup:', err);
     }
   };
 
+
   return (
-    <div>
+    <div className="container">
+      <h1>Join MooD</h1>
       <h2>Sign Up</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -60,5 +62,6 @@ function SignupPage() {
     </div>
   );
 }
+
 
 export default SignupPage;

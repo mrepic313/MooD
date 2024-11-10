@@ -1,0 +1,48 @@
+body, html {
+    height: 100%; /* Ensure the body takes up the full viewport height */
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50vh; /* Full viewport height for centering */
+    background-color: #f4f4f9;
+}
+
+.container h1 {
+    color: #4a4a8a;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adds spacing between form elements */
+    width: 100%;
+    max-width: 300px; /* Set a max width for the form */
+}
+
+input, button {
+    padding: 10px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #4a4a8a;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #3a3a7a;
+}
+
+p {
+    margin-top: 10px;
+    color: #4a4a8a;
+}
