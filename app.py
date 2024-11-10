@@ -21,7 +21,7 @@ def gemini_api(emotions):
         response = model.generate_content(prompt)
         print("Gemini API response:", response)
 
-        return response['text']
+        return response['text'] 
     except Exception as e:
         print("Error calling Gemini API:", e)
         return {"error": str(e)}
