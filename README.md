@@ -13,9 +13,9 @@ MooD is your next best friend and the only mental health app you'll ever need. F
 
 ## Technologies Used
 
-- **Frontend:** Built using React
+- **Frontend:** Built using React, CSS and JavaScript
 - **Backend:** Built using Python
-- Backend Repo: 
+- Database built using MongoDB
 
 ## Team Members
 
@@ -26,7 +26,15 @@ MooD is your next best friend and the only mental health app you'll ever need. F
 
 ## Getting Started
 
----
+To get started with MooD, you can follow these steps:
+
+1.  Clone the repository: git clone https://github.com/yourusername/MooD.git
+2.  Navigate to the project directory: cd MooD
+3.  Install dependencies:
+4.    Frontend: npm install
+5.  Start the frontend and backend servers:
+6.    Frontend: npm start
+7.  Access the application in your browser at http://localhost:5002.
 
 ## Contributing
 
@@ -46,6 +54,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Acknowledgements
 
-We would like to thank the following:
-
+Thanks to the following groups:
+- Meta for the roBERTa text classification model
+- Google for the emotion dataset used to train the model
 - Open-source contributors for their contributions to the tools and libraries used in this project.
