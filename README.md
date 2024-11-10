@@ -14,9 +14,9 @@ MooD is your next best friend and the only mental health app you'll ever need. F
 
 - **Frontend:** Built using React, CSS and JavaScript
 - **Backend:** Built using Python, PyTorch, TensorFlow, and JavaScript
-- **Database** Built using MongoDB
-- **Custom Trained Text Classification Model** Meta's [roBERTa-base]([url](https://github.com/facebookresearch/fairseq/tree/main/examples/roberta))
-- **Dataset and Chatbot** Google Gemini AI for Chatbot and [Emotions Dataset]([url](https://huggingface.co/datasets/google-research-datasets/go_emotions))
+- **Database:** Built using MongoDB
+- **Custom Trained Text Classification Model:** Meta's [roBERTa-base]([https://github.com/facebookresearch/fairseq/tree/main/examples/roberta])
+- **Dataset and Chatbot:** Google Gemini AI for Chatbot and [Emotions Dataset]([https://huggingface.co/datasets/google-research-datasets/go_emotions])
 
 ## Team Members
 
