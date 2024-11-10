@@ -18,8 +18,9 @@ def gemini_api(emotions):
         f"A user's recent journal entry reveals the following emotions and intensities: {emotion_text}. "
         "Please provide thoughtful and supportive advice tailored to help the user. "
         "Your response should acknowledge the mixed emotions and offer guidance that encourages well-being, "
-        "suggests helpful actions, or provides comforting words."
+        "suggests helpful actions, or provides comforting words. Eliminate All the asterisks in the output text and format the response."
     )
+
 
     try:
         model = genai.GenerativeModel(model_name="gemini-1.5-flash")

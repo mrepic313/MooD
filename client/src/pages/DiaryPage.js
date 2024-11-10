@@ -10,6 +10,7 @@ import {
     deleteDiaryEntry, 
     getAverageMood 
   } from '../services/diaryService';
+import '../styles/DiaryPage.css';
 
 function DiaryPage() {
   const [title, setTitle] = useState('');
@@ -99,18 +100,18 @@ function DiaryPage() {
   };
 
   return (
-    <div>
+    <div className="diary-page">
       <h2>Diary Page</h2>
-      
+
       {/* Display average mood intensity */}
       {averageMood !== null && (
-        <div>
+        <div className="average-mood">
           <h4>Average Mood Intensity: {averageMood.toFixed(2)}</h4>
         </div>
       )}
 
       {/* Form to create or update a diary entry */}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="diary-form">
         <input
           type="text"
           placeholder="Title"
@@ -124,32 +125,41 @@ function DiaryPage() {
           onChange={(e) => setContent(e.target.value)}
           required
         ></textarea>
-        <button type="submit">{editingId ? 'Update Entry' : 'Add Entry'}</button>
-        {editingId && <button onClick={() => { setEditingId(null); setTitle(''); setContent(''); }}>Cancel Edit</button>}
+        <button type="submit" className="submit-button">{editingId ? 'Update Entry' : 'Add Entry'}</button>
+        {editingId && (
+          <button 
+            type="button" 
+            onClick={() => { setEditingId(null); setTitle(''); setContent(''); }}
+            className="cancel-button"
+          >
+            Cancel Edit
+          </button>
+        )}
       </form>
 
-      {/* Display loading state */}
-      {loading ? <p>Loading...</p> : null}
+      {loading && <p>Loading...</p>}
 
       {/* List of all diary entries */}
-      <div>
+      <div className="diary-entries">
         <h3>Your Diary Entries</h3>
         {diaries.map((diary) => (
-          <div key={diary._id} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
+          <div key={diary._id} className="diary-entry">
             <h4>{diary.title}</h4>
             <p>{diary.content}</p>
             {diary.mood && (
-              <div>
+              <div className="mood-info">
                 <p><strong>Mood:</strong> {diary.mood.mood} (Intensity: {diary.mood.intensity})</p>
                 <p><strong>Mood Note:</strong> {diary.mood.note}</p>
               </div>
             )}
             {diary.suggestions && (
-              <p><strong>Suggestion:</strong> {diary.suggestions}</p>
+              <div className="suggestion-box" dangerouslySetInnerHTML={{ __html: diary.suggestions }} />
             )}
-            <button onClick={() => handleAnalyze(diary._id)}>Analyze Mood</button>
-            <button onClick={() => handleEdit(diary._id)}>Edit</button>
-            <button onClick={() => handleDelete(diary._id)}>Delete</button>
+            <div className="entry-buttons">
+              <button onClick={() => handleAnalyze(diary._id)} className="analyze-button">Analyze Mood</button>
+              <button onClick={() => handleEdit(diary._id)} className="edit-button">Edit</button>
+              <button onClick={() => handleDelete(diary._id)} className="delete-button">Delete</button>
+            </div>
           </div>
         ))}
       </div>

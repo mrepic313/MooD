@@ -1,0 +1,79 @@
+.diary-page {
+    width: 80%;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  .average-mood {
+    background-color: #f3f4f6;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+  
+  .diary-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .diary-form input, .diary-form textarea {
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .submit-button, .cancel-button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .cancel-button {
+    background-color: #e57373;
+    color: #fff;
+  }
+  
+  .diary-entries {
+    margin-top: 20px;
+  }
+  
+  .diary-entry {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .mood-info {
+    margin-top: 10px;
+    font-style: italic;
+  }
+  
+  .entry-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .analyze-button, .edit-button, .delete-button {
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  
+  .analyze-button {
+    background-color: #2196f3;
+    color: #fff;
+  }
+  
+  .edit-button {
+    background-color: #ff9800;
+    color: #fff;
+  }
+  
+  .delete-button {
+    background-color: #f44336;
+    color: #fff;
+  }
+  
