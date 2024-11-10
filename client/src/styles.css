@@ -107,13 +107,13 @@ textarea:focus {
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 15px;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(204, 224, 248);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   color: #000; /* Set text color to black for diary entries */
 }
 
 .diary-entry h4 {
-  color: #FFD700;
+  color: #6d11be;
   margin-bottom: 10px;
 }
 

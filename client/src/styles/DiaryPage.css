@@ -11,6 +11,14 @@
     border-radius: 5px;
   }
   
+  .average-stat{
+    color:#400faa;
+    background-color: #f3f4f6;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+
   .diary-form {
     display: flex;
     flex-direction: column;

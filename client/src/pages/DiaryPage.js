@@ -160,7 +160,7 @@ const formatSuggestion = (suggestions) => {
       <h2>Diary Page</h2>
 
       {averageMood !== null && (
-        <div className="average-mood">
+        <div className="average-stat">
           <h4>Average Mood Intensity: {averageMood.toFixed(2)}</h4>
         </div>
       )}
@@ -201,8 +201,8 @@ const formatSuggestion = (suggestions) => {
             <p>{diary.content}</p>
             {diary.mood && (
               <div className="mood-info">
-                <p><strong>Mood:</strong> {diary.mood.mood} (Intensity: {diary.mood.intensity})</p>
-                <p><strong>Mood Note:</strong> {diary.mood.note}</p>
+                <p><strong>Intensity:</strong> {diary.mood.mood} (Intensity: {diary.mood.intensity})</p>
+                <p><strong>Moods:</strong> {diary.mood.note}</p>
               </div>
             )}
             {diary.suggestions && (
